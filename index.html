@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transcrição Inteligente com GPT</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+    .container { max-width: 960px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input[type="file"], button, textarea { width: 100%; margin-top: 10px; margin-bottom: 20px; padding: 10px; }
+    .status { font-weight: bold; margin-bottom: 10px; }
+    .progress-bar { height: 20px; background: #e0e0e0; border-radius: 5px; overflow: hidden; margin-bottom: 10px; }
+    .progress-bar-fill { height: 100%; background: #4caf50; width: 0%; color: white; text-align: center; line-height: 20px; }
+    .tag-selector label { background: #e6f0ff; padding: 5px 10px; border-radius: 5px; margin: 5px; display: inline-block; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎤 Transcrição Inteligente com GPT</h1>
+
+    <input type="file" id="audioUpload" accept="audio/*" />
+    <button onclick="simularTranscricao()">🎙️ Iniciar Transcrição</button>
+
+    <div class="status" id="statusText">📥 Aguardando envio do áudio...</div>
+    <div class="progress-bar"><div class="progress-bar-fill" id="progressFill">0%</div></div>
+
+    <textarea id="outputText" rows="10" placeholder="Texto transcrito aparecerá aqui..."></textarea>
+
+    <div>
+      <h3>📋 Selecione os tópicos que deseja incluir no resumo:</h3>
+      <div class="tag-selector" id="fixos">
+        <label><input type="checkbox" value="Definição">Definição</label>
+        <label><input type="checkbox" value="Etiologia">Etiologia</label>
+        <label><input type="checkbox" value="Diagnóstico">Diagnóstico</label>
+        <label><input type="checkbox" value="Tratamento">Tratamento</label>
+        <label><input type="checkbox" value="Conduta">Conduta</label>
+        <label><input type="checkbox" value="Dica de Prova">Dica de Prova</label>
+      </div>
+      <div class="tag-selector" id="sugeridos"></div>
+      <button onclick="gerarResumo()">📌 Gerar Resumo</button>
+      <p id="resumoOutput"></p>
+    </div>
+  </div>
+
+  <script>
+    function simularTranscricao() {
+      const status = document.getElementById("statusText");
+      const progress = document.getElementById("progressFill");
+
+      status.textContent = "📤 Enviando áudio...";
+      let percent = 0;
+      const interval = setInterval(() => {
+        percent += 10;
+        progress.style.width = percent + "%";
+        progress.textContent = percent + "%";
+        if (percent >= 100) {
+          clearInterval(interval);
+          status.textContent = "🧠 Transcrevendo com GPT...";
+          setTimeout(() => {
+            const texto = "Paciente com diagnóstico de câncer colorretal apresenta sintomas como sangramento retal, emagrecimento e dor abdominal. Exames de imagem revelam massa obstrutiva. Tratamento indicado é cirurgia e quimioterapia.";
+            document.getElementById("outputText").value = texto;
+            status.textContent = "✅ Transcrição completa!";
+            gerarTopicosSugeridos(texto);
+          }, 1500);
+        }
+      }, 300);
+    }
+
+    function gerarTopicosSugeridos(texto) {
+      const palavrasChave = ["sangramento", "emagrecimento", "imagem", "massa", "quimioterapia", "cirurgia", "sintomas", "conduta"];
+      const encontrados = palavrasChave.filter(p => texto.toLowerCase().includes(p));
+      const container = document.getElementById("sugeridos");
+      container.innerHTML = "";
+      encontrados.forEach(p => {
+        const label = document.createElement("label");
+        label.innerHTML = `<input type='checkbox' value='${p}'> ${p.charAt(0).toUpperCase() + p.slice(1)}`;
+        container.appendChild(label);
+      });
+    }
+
+    function gerarResumo() {
+      const texto = document.getElementById("outputText").value;
+      const checks = document.querySelectorAll("input[type='checkbox']:checked");
+      const topicos = Array.from(checks).map(cb => cb.value.toLowerCase());
+      const linhas = texto.split("\n");
+      const resumo = linhas.filter(l => topicos.some(t => l.toLowerCase().includes(t)));
+      document.getElementById("resumoOutput").textContent = resumo.join("\n") || "⚠️ Nenhuma correspondência com os tópicos selecionados.";
+    }
+  </script>
+</body>
+</html>

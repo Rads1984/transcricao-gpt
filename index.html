@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,26 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Transcrição GPT</title>
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; padding: 20px; }
-    h1 { font-size: 1.8em; color: #2c3e50; }
-    input, button { margin: 10px 0; padding: 10px; }
-    #transcriptionResult { margin-top: 20px; white-space: pre-wrap; background: #fff; padding: 15px; border: 1px solid #ccc; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 1.8em;
+      color: #2c3e50;
+    }
+
+    input, button {
+      margin: 10px 0;
+      padding: 10px;
+    }
+
+    #transcriptionResult {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ccc;
+    }
   </style>
 </head>
 <body>
   <h1>🎙️ Transcrição GPT</h1>
   <p><strong>Bem-vindo ao site AnotaFácil Pro</strong></p>
   <p>Envie seu áudio e veja a mágica acontecer: transcrição + organização + exportação.</p>
+
   <form>
     <label for="audioFile">Selecionar Áudio</label><br>
-    <input type="file" id="audioFile" accept="audio/*" />
+    <input type="file" id="audioFile" accept="audio/m4a, audio/x-m4a, audio/mp3, audio/wav, audio/*" />
     <br>
     <button type="button" onclick="startTranscription()">Iniciar Transcrição</button>
   </form>
+
   <div id="transcriptionResult">Texto transcrito aparecerá aqui...</div>
+
   <script>
     function startTranscription() {
-      document.getElementById('transcriptionResult').innerText = '🔄 Transcrevendo (simulação)...';
+      const fileInput = document.getElementById('audioFile');
+      const result = document.getElementById('transcriptionResult');
+
+      if (!fileInput.files.length) {
+        result.innerText = '⚠️ Nenhum arquivo selecionado.';
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const fileName = file.name.toLowerCase();
+
+      if (!fileName.endsWith('.m4a') && !fileName.endsWith('.mp3') && !fileName.endsWith('.wav')) {
+        result.innerText = '❌ Formato não suportado. Envie um arquivo .m4a, .mp3 ou .wav.';
+        return;
+      }
+
+      result.innerText = '🔄 Transcrevendo (simulação)...';
+      // Aqui viria a lógica real de transcrição, se integrada com backend/API
     }
   </script>
 </body>

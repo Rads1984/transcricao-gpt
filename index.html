@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AnotaFácil Pro – Transcrição Inteligente</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      margin-top: 40px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #00796b;
+    }
+    input[type="file"], textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #00796b;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #004d40;
+    }
+    .progress-bar {
+      height: 20px;
+      background-color: #ccc;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .progress-fill {
+      height: 100%;
+      background-color: #00796b;
+      width: 0%;
+      text-align: center;
+      color: white;
+      font-size: 12px;
+      line-height: 20px;
+    }
+    .section {
+      margin-top: 30px;
+    }
+    .logo {
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">✨ AnotaFácil Pro</div>
+    <h1>🧠 Transcrição Inteligente com GPT</h1>
+
+    <input type="file" id="audioFile" accept=".mp3,.m4a,.wav" />
+    <button onclick="startTranscription()">🎙️ Iniciar Transcrição</button>
+
+    <div class="progress-bar"><div class="progress-fill" id="progress">0%</div></div>
+
+    <textarea id="transcribedText" rows="8" placeholder="Texto transcrito aparecerá aqui..."></textarea>
+
+    <div class="section">
+      <h3>📋 Selecione os tópicos que deseja incluir no resumo:</h3>
+      <label><input type="checkbox" /> Definição</label><br/>
+      <label><input type="checkbox" /> Etiologia</label><br/>
+      <label><input type="checkbox" /> Diagnóstico</label><br/>
+      <label><input type="checkbox" /> Tratamento</label><br/>
+      <label><input type="checkbox" /> Conduta</label><br/>
+      <label><input type="checkbox" /> Dica de Prova</label><br/>
+      <button>📌 Gerar Resumo</button>
+    </div>
+
+    <div class="section">
+      <h3>✍️ Correção Gramatical (2 opções):</h3>
+      <button onclick="window.open('https://languagetool.org/pt', '_blank')">🔗 LanguageTool</button>
+      <button onclick="alert('Recurso ChatGPT: copie e cole no ChatGPT Plus para correção.')">🔁 Corrigir via ChatGPT</button>
+    </div>
+  </div>
+
+  <script>
+    function startTranscription() {
+      const progressBar = document.getElementById('progress');
+      let percent = 0;
+      const interval = setInterval(() => {
+        percent += 10;
+        if (percent > 100) {
+          clearInterval(interval);
+          document.getElementById('transcribedText').value = 'Exemplo de transcrição concluída com sucesso!';
+        } else {
+          progressBar.style.width = percent + '%';
+          progressBar.textContent = percent + '%';
+        }
+      }, 300);
+    }
+  </script>
+</body>
+</html>
